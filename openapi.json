@@ -1,0 +1,705 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Notification Service Backend API",
+    "description": "A production-grade multi-channel notification microservice.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/notifications": {
+      "post": {
+        "tags": [
+          "notifications"
+        ],
+        "summary": "Send a notification",
+        "operationId": "send_notification_notifications_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotificationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notifications/{id}": {
+      "get": {
+        "tags": [
+          "notifications"
+        ],
+        "summary": "Get status of a notification",
+        "operationId": "get_status_notifications__id__get",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotificationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}/preferences": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Set channel preferences for a user",
+        "operationId": "set_preferences_users__userId__preferences_post",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Userid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserPreferenceRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserPreferenceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Get channel preferences for a user",
+        "operationId": "get_preferences_users__userId__preferences_get",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Userid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserPreferenceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}/notifications": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Get paginated notification history for a user",
+        "operationId": "get_history_users__userId__notifications_get",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Userid"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NotificationResponse"
+                  },
+                  "title": "Response Get History Users  Userid  Notifications Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/templates": {
+      "get": {
+        "tags": [
+          "templates"
+        ],
+        "summary": "List all templates",
+        "operationId": "list_templates_templates_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/TemplateResponse"
+                  },
+                  "type": "array",
+                  "title": "Response List Templates Templates Get"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "templates"
+        ],
+        "summary": "Create a new template",
+        "operationId": "create_template_templates_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TemplateCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TemplateResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ChannelEnum": {
+        "type": "string",
+        "enum": [
+          "EMAIL",
+          "SMS",
+          "PUSH"
+        ],
+        "title": "ChannelEnum"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "NotificationDeliveryResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "channel": {
+            "type": "string",
+            "title": "Channel"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "retryCount": {
+            "type": "integer",
+            "title": "Retrycount"
+          },
+          "errorMessage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Errormessage"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updatedat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "channel",
+          "status",
+          "retryCount",
+          "errorMessage",
+          "createdAt",
+          "updatedAt"
+        ],
+        "title": "NotificationDeliveryResponse"
+      },
+      "NotificationRequest": {
+        "properties": {
+          "userId": {
+            "type": "string",
+            "title": "Userid",
+            "description": "The target user identifier."
+          },
+          "channels": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ChannelEnum"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Channels",
+            "description": "Optional list of target channels. If not provided, defaults to all channels the user has opted into."
+          },
+          "templateName": {
+            "type": "string",
+            "title": "Templatename",
+            "description": "The template name used to compile the message."
+          },
+          "variables": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Variables",
+            "description": "The key-value pairs used for template variable substitution."
+          },
+          "priority": {
+            "$ref": "#/components/schemas/PriorityEnum",
+            "description": "The priority level of the notification.",
+            "default": "NORMAL"
+          }
+        },
+        "type": "object",
+        "required": [
+          "userId",
+          "templateName"
+        ],
+        "title": "NotificationRequest"
+      },
+      "NotificationResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "userId": {
+            "type": "string",
+            "title": "Userid"
+          },
+          "templateId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Templateid"
+          },
+          "templateVariables": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Templatevariables"
+          },
+          "priority": {
+            "type": "string",
+            "title": "Priority"
+          },
+          "deliveries": {
+            "items": {
+              "$ref": "#/components/schemas/NotificationDeliveryResponse"
+            },
+            "type": "array",
+            "title": "Deliveries"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updatedat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "userId",
+          "templateId",
+          "templateVariables",
+          "priority",
+          "deliveries",
+          "createdAt",
+          "updatedAt"
+        ],
+        "title": "NotificationResponse"
+      },
+      "PriorityEnum": {
+        "type": "string",
+        "enum": [
+          "CRITICAL",
+          "HIGH",
+          "NORMAL",
+          "LOW"
+        ],
+        "title": "PriorityEnum"
+      },
+      "TemplateCreate": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Unique name identifier for the template."
+          },
+          "subject": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subject",
+            "description": "Optional subject line for channels like email."
+          },
+          "content": {
+            "type": "string",
+            "title": "Content",
+            "description": "Template body containing {{variable}} placeholders."
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "content"
+        ],
+        "title": "TemplateCreate"
+      },
+      "TemplateResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "subject": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subject"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updatedat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "subject",
+          "content",
+          "createdAt",
+          "updatedAt"
+        ],
+        "title": "TemplateResponse"
+      },
+      "UserPreferenceRequest": {
+        "properties": {
+          "emailEnabled": {
+            "type": "boolean",
+            "title": "Emailenabled",
+            "default": true
+          },
+          "smsEnabled": {
+            "type": "boolean",
+            "title": "Smsenabled",
+            "default": true
+          },
+          "pushEnabled": {
+            "type": "boolean",
+            "title": "Pushenabled",
+            "default": true
+          }
+        },
+        "type": "object",
+        "title": "UserPreferenceRequest"
+      },
+      "UserPreferenceResponse": {
+        "properties": {
+          "userId": {
+            "type": "string",
+            "title": "Userid"
+          },
+          "emailEnabled": {
+            "type": "boolean",
+            "title": "Emailenabled"
+          },
+          "smsEnabled": {
+            "type": "boolean",
+            "title": "Smsenabled"
+          },
+          "pushEnabled": {
+            "type": "boolean",
+            "title": "Pushenabled"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Createdat"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updatedat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "userId",
+          "emailEnabled",
+          "smsEnabled",
+          "pushEnabled",
+          "createdAt",
+          "updatedAt"
+        ],
+        "title": "UserPreferenceResponse"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}
